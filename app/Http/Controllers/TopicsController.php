@@ -16,6 +16,7 @@ class TopicsController extends Controller
 
 	public function index()
 	{
+	    //with()提前加载关联属性，防止重复查询
 	    $topics = Topic::with('user','category')->paginate(30);
 		//$topics = Topic::paginate();
 		return view('topics.index', compact('topics'));
