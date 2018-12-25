@@ -16,6 +16,11 @@ class Topic extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function replies()
+    {
+        return $this->hasMany(Reply::class,'topic_id',$this->primaryKey);
+    }
+
     public function scopeWithOrder($query, $order)
     {
         switch ($order) {
