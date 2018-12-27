@@ -39,7 +39,7 @@ class SeedRolesAndPermissionsData extends Migration
     {
         app()['cache']->forget('spatie.permission.cache');
 
-        $tableNames = config('permission.permission.cache');
+        $tableNames = config('permission.table_names');
 
         //取消模型保护
         \App\Models\Model::unguard();
