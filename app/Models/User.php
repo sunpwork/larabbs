@@ -15,6 +15,8 @@ class User extends Authenticatable
         notify as protected laravelNotify;
     }
 
+    use Traits\ActiveUserHelper;
+
     public function notify($instance)
     {
         if ($this->id == Auth::id()) {
