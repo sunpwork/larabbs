@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Handlers\ImageUploadHandler;
+use App\Models\Link;
 use App\Models\Topic;
 use App\Models\Category;
 use App\Models\User;
@@ -19,12 +20,13 @@ class TopicsController extends Controller
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
-    public function index(Request $request, Topic $topic, User $user)
+    public function index(Request $request, Topic $topic, User $user, Link $link)
     {
         //with()提前加载关联属性，防止重复查询
         $topics = $topic->withOrder($request->order)->paginate(20);
         $active_users = $user->getActiveUsers();
-        return view('topics.index', compact('topics', 'active_users'));
+        $links = $link->getAllCached();
+        return view('topics.index', compact('topics', 'active_users','links'));
     }
 
     public function show(Request $request, Topic $topic)
