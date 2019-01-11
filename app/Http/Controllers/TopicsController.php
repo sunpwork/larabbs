@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Handlers\ImageUploadHandler;
+use App\Models\Category;
 use App\Models\Link;
 use App\Models\Topic;
-use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\TopicRequest;
-
 use Auth;
 
 class TopicsController extends Controller
@@ -22,11 +20,13 @@ class TopicsController extends Controller
 
     public function index(Request $request, Topic $topic, User $user, Link $link)
     {
-        //with()提前加载关联属性，防止重复查询
-        $topics = $topic->withOrder($request->order)->paginate(20);
+        $topics = $topic->WithOrder($request->order)->paginate();
+
         $active_users = $user->getActiveUsers();
+
         $links = $link->getAllCached();
-        return view('topics.index', compact('topics', 'active_users','links'));
+
+        return view('topics.index', compact('topics', 'active_users', 'links'));
     }
 
     public function show(Request $request, Topic $topic)
@@ -49,7 +49,7 @@ class TopicsController extends Controller
         $topic->fill($request->all());
         $topic->user_id = Auth::id();
         $topic->save();
-        return redirect()->to($topic->link())->with('success', '成功创建话题！');
+        return redirect()->to($topic->link())->with('success', '话题创建成功！');
     }
 
     public function edit(Topic $topic)
@@ -64,7 +64,7 @@ class TopicsController extends Controller
         $this->authorize('update', $topic);
         $topic->update($request->all());
 
-        return redirect()->to($topic->link())->with('success', '更新成功！');
+        return redirect()->to($topic->link())->with('success', '话题更新成功！');
     }
 
     public function destroy(Topic $topic)
@@ -72,23 +72,23 @@ class TopicsController extends Controller
         $this->authorize('destroy', $topic);
         $topic->delete();
 
-        return redirect()->route('topics.index')->with('success', '成功删除！');
+        return redirect()->route('topics.index')->with('success', '成功删除话题！');
     }
 
-    public function uploadImage(Request $request, ImageUploadHandler $uploader)
+    public function uploadImage(Request $request, ImageUploadHandler $uploadHandler)
     {
         $data = [
             'success' => false,
-            'msg' => '上传失败',
-            'file_path' => ''
+            'msg' => '上传失败！',
+            'file_path' => '',
         ];
 
         if ($file = $request->upload_file) {
-            $result = $uploader->save($request->upload_file, 'topic', Auth::id(), 1024);
+            $result = $uploadHandler->save($file, 'topics', \Auth::id(), 1024);
 
             if ($result) {
                 $data['file_path'] = $result['path'];
-                $data['msg'] = '上传成功';
+                $data['msg'] = '上传成功！';
                 $data['success'] = true;
             }
         }

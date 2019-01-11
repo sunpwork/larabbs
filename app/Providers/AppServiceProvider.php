@@ -17,8 +17,9 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\Reply::observe(\App\Observers\ReplyObserver::class);
         \App\Models\Topic::observe(\App\Observers\TopicObserver::class);
         \App\Models\Link::observe(\App\Observers\LinkObserver::class);
-
+        \App\Models\SiteSetting::observe(\App\Observers\SiteSettingObserver::class);
         //
+        //设置Carbon（DateTime操作扩展）语言为中文
         \Carbon\Carbon::setLocale('zh');
     }
 

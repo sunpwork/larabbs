@@ -1,7 +1,7 @@
-@if (count($replies))
+@if(count($replies))
 
     <ul class="list-group">
-        @foreach ($replies as $reply)
+        @foreach($replies as $reply)
             <li class="list-group-item">
                 <a href="{{ $reply->topic->link(['#reply' . $reply->id]) }}">
                     {{ $reply->topic->title }}
@@ -12,16 +12,17 @@
                 </div>
 
                 <div class="meta">
-                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-                    回复于 {{ $reply->created_at->diffForHumans() }}
+                    <span class="glyphicon glyphicon-time"
+                          aria-hidden="true"></span> 回复于 {{ $reply->created_at->diffForHumans() }}
                 </div>
             </li>
         @endforeach
     </ul>
 
-@else
-    <div class="empty-block">暂无数据 ~_~</div>
-@endif
+    {!! $replies->appends(Request::except('page'))->render() !!}
 
-{{-- 分页 --}}
-{!! $replies->appends(Request::except('page'))->render() !!}
+@else
+
+    <div class="empty-block">暂无数据 ~_~</div>
+
+@endif

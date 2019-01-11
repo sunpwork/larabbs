@@ -12,9 +12,8 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = app(Faker\Generator::class);
+        $faker = app(\Faker\Generator::class);
 
-        // 头像假数据
         $avatars = [
             'https://iocaffcdn.phphub.org/uploads/images/201710/14/1/s5ehp11z6s.png?imageView2/1/w/200/h/200',
             'https://iocaffcdn.phphub.org/uploads/images/201710/14/1/Lhd1SHqu86.png?imageView2/1/w/200/h/200',
@@ -32,7 +31,7 @@ class UsersTableSeeder extends Seeder
                 $user->avatar = $faker->randomElement($avatars);
             });
 
-        $user_array = $users->makeVisible(['password','remember_token'])->toArray();
+        $user_array = $users->makeVisible(['password', 'remember_token'])->toArray();
 
         User::insert($user_array);
 
@@ -40,10 +39,5 @@ class UsersTableSeeder extends Seeder
         $user->name = 'sunpwork';
         $user->email = 'sunpwork@qq.com';
         $user->save();
-
-        $user->assignRole('Founder');
-
-        $user = User::find(2);
-        $user->assignRole('Maintainer');
     }
 }

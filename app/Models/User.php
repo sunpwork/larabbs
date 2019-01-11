@@ -4,27 +4,28 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Auth;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasRoles;
-
     use Notifiable {
         notify as protected laravelNotify;
     }
 
     use Traits\ActiveUserHelper;
+
     use Traits\LastActivedAtHelper;
 
+    /**
+     * @param $instance
+     * 重写notify方法 使得notification_count自动+1
+     */
     public function notify($instance)
     {
-        if ($this->id == Auth::id()) {
-            return;
+        if ($this->id != \Auth::id()) {
+            $this->increment('notification_count');
+            $this->laravelNotify($instance);
         }
-        $this->increment('notification_count');
-        $this->laravelNotify($instance);
     }
 
     /**
@@ -75,11 +76,9 @@ class User extends Authenticatable
         $this->attributes['password'] = $value;
     }
 
-    public function setAvatarAttribute($path)
+    public function idToNameMap()
     {
-        if (!starts_with($path, 'http')) {
-            $path = config('app.url') . "/uploads/images/avatars/$path";
-        }
-        $this->attributes['avatar'] = $path;
+        $users = User::all(['id', 'name']);
+
     }
 }

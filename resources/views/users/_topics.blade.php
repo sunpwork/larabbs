@@ -1,23 +1,24 @@
-@if (count($topics))
+@if(count($topics))
 
     <ul class="list-group">
-        @foreach ($topics as $topic)
+        @foreach($topics as $topic)
             <li class="list-group-item">
                 <a href="{{ $topic->link() }}">
                     {{ $topic->title }}
                 </a>
                 <span class="meta pull-right">
-                {{ $topic->reply_count }} 回复
-                <span> ⋅ </span>
+                    {{ $topic->reply_count }} 回复
+                    <span> ⋅ </span>
                     {{ $topic->created_at->diffForHumans() }}
-            </span>
+                </span>
             </li>
         @endforeach
     </ul>
 
-@else
-    <div class="empty-block">暂无数据 ~_~</div>
-@endif
+    {!! $topics->render() !!}
 
-{{-- 分页 --}}
-{!! $topics->render() !!}
+@else
+
+    <div class="empty-block">暂无数据 ~_~</div>
+
+@endif

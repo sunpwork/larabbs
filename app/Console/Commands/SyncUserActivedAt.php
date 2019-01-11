@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\User;
+use Illuminate\Console\Command;
 
 class SyncUserActivedAt extends Command
 {
@@ -19,7 +19,7 @@ class SyncUserActivedAt extends Command
      *
      * @var string
      */
-    protected $description = '将用户最后登录时间从Redis同步到数据库中';
+    protected $description = '将用户最后登录时间从Redis同步到MySQL数据库中';
 
     /**
      * Create a new command instance.
@@ -38,7 +38,7 @@ class SyncUserActivedAt extends Command
      */
     public function handle(User $user)
     {
-        $user->syncUserActivedAt();
+        $user->syncUserActiveAt();
         $this->info('同步成功!');
     }
 }

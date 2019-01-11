@@ -3,6 +3,8 @@
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 
+/* universal */
+
 body {
   font-family: Hiragino Sans GB, "Hiragino Sans GB", Helvetica, "Microsoft YaHei", Arial, sans-serif;
 }
@@ -16,17 +18,17 @@ body {
   border-top: 4px solid #00b5ad;
   margin-bottom: 40px;
   margin-top: 0px;
-}
 
-.dropdown-menu {
-  padding: 0px;
+  .dropdown-menu {
+    padding: 0px;
 
-  li a {
-    border-bottom: 1px solid #d8d8d8;
-    line-height: 2.4;
+    li a {
+      border-bottom: 1px solid #d8d8d8;
+      line-height: 2.4;
 
-    .glyphicon {
-      margin-right: 8px;
+      .glyphicon {
+        margin-right: 8px;
+      }
     }
   }
 }
@@ -110,6 +112,7 @@ body {
     font-size: .9em;
     color: #b3b3b3;
   }
+
   .reply-content {
     margin: 6px 0;
   }
@@ -124,19 +127,24 @@ body {
       padding: 5px 14px;
       font-size: 0.9em;
     }
+
     a {
       color: #444444;
     }
+
     .meta {
       font-size: 0.9em;
       color: #b3b3b3;
+
       a {
         color: #b3b3b3;
       }
     }
+
     .badge {
       background-color: #d8d8d8;
     }
+
     hr {
       margin-top: 12px;
       margin-bottom: 12px;
@@ -151,7 +159,6 @@ body {
 @import "topic_body";
 
 .topics-show-page {
-
   .panel {
     padding: 15px;
 
@@ -180,7 +187,6 @@ body {
 }
 
 /* Notifications badge */
-
 .notifications-badge {
   margin-top: -1;
 
@@ -194,7 +200,6 @@ body {
 }
 
 /* Sidebar */
-
 .sidebar {
   .panel-body {
     padding: 12px;
@@ -205,7 +210,7 @@ body {
     margin-bottom: 10px;
   }
 
-  .active-users {
+  .active-users, .links {
     a.media {
       color: #797878;
       line-height: 26px;

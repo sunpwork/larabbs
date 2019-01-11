@@ -5,7 +5,6 @@
     <div class="container">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-
                 <div class="panel-body">
                     <h2 class="text-center">
                         <i class="glyphicon glyphicon-edit"></i>
@@ -20,39 +19,34 @@
 
                     @include('common.error')
 
-                    <form action="{{ $topic->id ? route('topics.update', $topic->id) : route('topics.store') }}"
+                    <form action="{{ $topic->id ? route('topics.update',$topic->id) : route('topics.store') }}"
                           method="POST" accept-charset="UTF-8">
                         @if($topic->id)
                             <input type="hidden" name="_method" value="PUT">
                         @endif
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
                         <div class="form-group">
                             <input class="form-control" type="text" name="title"
-                                   value="{{ old('title', $topic->title ) }}" placeholder="请填写标题" required/>
+                                   value="{{ old('title',$topic->title) }}" placeholder="请填写标题" required/>
                         </div>
-
                         <div class="form-group">
                             <select class="form-control" name="category_id" required>
-                                <option value="" hidden disabled {{ $topic->id ? '' : 'selected' }}>请选择分类</option>
-                                @foreach ($categories as $value)
-                                    <option value="{{ $value->id }}" {{ $topic->category_id == $value->id ? 'selected' : '' }}>{{ $value->name }}</option>
+                                <option value="" hidden disabled {{ $topic->id ? '':'selected' }}>请选择分类</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ $topic->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
-
                         <div class="form-group">
-                            <textarea name="body" class="form-control" id="editor" rows="3" placeholder="请填入至少三个字符的内容。"
-                                      required>{{ old('body', $topic->body ) }}</textarea>
+                            <textarea name="body" class="form-control" id="editor" rows="3" placeholder="请填写至少三个字符的内容。"
+                                      required>{{ old('body',$topic->body) }}</textarea>
                         </div>
-
                         <div class="well well-sm">
-                            <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"
-                                                                                aria-hidden="true"></span> 保存
+                            <button type="submit" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>保存
                             </button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
@@ -71,18 +65,22 @@
     <script type="text/javascript" src="{{ asset('js/simditor.js') }}"></script>
 
     <script>
+
         $(document).ready(function () {
             var editor = new Simditor({
                 textarea: $('#editor'),
                 upload: {
                     url: '{{ route('topics.upload_image') }}',
-                    params: {_token: '{{ csrf_token() }}'},
+                    params: {
+                        _token: '{{ csrf_token() }}',
+                    },
                     fileKey: 'upload_file',
                     connectionCount: 3,
-                    leaveConfirm: '文件上传中，关闭此页面将取消上传。'
+                    leaveConfirm: '文件上传中，关闭此页面将取消上传。',
                 },
                 pasteImage: true,
             });
-        })
+        });
+
     </script>
 @stop

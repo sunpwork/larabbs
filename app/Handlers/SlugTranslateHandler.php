@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: xinsulv
- * Date: 2018/12/23
- * Time: 4:12 PM
- */
 
 namespace App\Handlers;
 
@@ -29,22 +23,21 @@ class SlugTranslateHandler
         $sign = md5($appid . $text . $salt . $key);
 
         $query = http_build_query([
-            "q" => $text,
-            "from" => "zh",
-            "to" => "en",
-            "appid" => $appid,
-            "salt" => $salt,
-            "sign" => $sign,
+            'q' => $text,
+            'from' => 'zh',
+            'to' => 'en',
+            'appid' => $appid,
+            'salt' => $salt,
+            'sign' => $sign,
         ]);
 
         $response = $http->get($api . $query);
 
-        $result = json_decode($response->getBody(), true);
+        $result = \GuzzleHttp\json_decode($response->getBody(), true);
 
-        if(isset($result['trans_result'][0]['dst'])){
+        if (isset($result['trans_result'][0]['dst'])) {
             return str_slug($result['trans_result'][0]['dst']);
-        }else
-        {
+        } else {
             return $this->pinyin($text);
         }
     }

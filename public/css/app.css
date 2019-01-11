@@ -8333,6 +8333,8 @@ button.close {
   }
 }
 
+/* universal */
+
 body {
   font-family: Hiragino Sans GB, "Hiragino Sans GB", Helvetica, "Microsoft YaHei", Arial, sans-serif;
 }
@@ -8349,16 +8351,16 @@ body {
   margin-top: 0px;
 }
 
-.dropdown-menu {
+.navbar-static-top .dropdown-menu {
   padding: 0px;
 }
 
-.dropdown-menu li a {
+.navbar-static-top .dropdown-menu li a {
   border-bottom: 1px solid #d8d8d8;
   line-height: 2.4;
 }
 
-.dropdown-menu li a .glyphicon {
+.navbar-static-top .dropdown-menu li a .glyphicon {
   margin-right: 8px;
 }
 
@@ -8993,7 +8995,8 @@ body {
   margin-bottom: 10px;
 }
 
-.sidebar .active-users a.media {
+.sidebar .active-users a.media,
+.sidebar .links a.media {
   color: #797878;
   line-height: 26px;
   font-size: 0.9em;

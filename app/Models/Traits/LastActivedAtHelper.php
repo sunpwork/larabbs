@@ -2,34 +2,43 @@
 
 namespace App\Models\Traits;
 
-use Redis;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Redis;
 
 trait LastActivedAtHelper
 {
     protected $hash_prefix = 'larabbs_last_actived_at_';
     protected $field_prefix = 'user_';
 
+    public function getHashFormDateString($date)
+    {
+        return $this->hash_prefix . $date;
+    }
+
+    public function getHashField()
+    {
+        return $this->field_prefix . $this->id;
+    }
+
     public function recordLastActivedAt()
     {
         $date = Carbon::now()->toDateString();
 
-        $hash = $this->getHashFromDateString($date);
-
+        $hash = $this->getHashFormDateString($date);
         $field = $this->getHashField();
 
         $now = Carbon::now()->toDateTimeString();
 
-        Redis::hSet($hash, $field, $now);
+        \Redis::hSet($hash, $field, $now);
     }
 
-    public function syncUserActivedAt()
+    public function syncUserActiveAt()
     {
         $yesterday_date = Carbon::yesterday()->toDateString();
 
-        $hash = $this->getHashFromDateString($yesterday_date);
+        $hash = $this->getHashFormDateString($yesterday_date);
 
-        $dates = Redis::hGetAll($hash);
+        $dates = \Redis::hGetAll($hash);
 
         foreach ($dates as $user_id => $actived_at) {
             $user_id = str_replace($this->field_prefix, '', $user_id);
@@ -39,18 +48,18 @@ trait LastActivedAtHelper
                 $user->save();
             }
         }
-        Redis::del($hash);
+
+        \Redis::del($hash);
     }
 
     public function getLastActivedAtAttribute($value)
     {
         $date = Carbon::now()->toDateString();
 
-        $hash = $this->getHashFromDateString($date);
-
+        $hash = $this->getHashFormDateString($date);
         $field = $this->getHashField();
 
-        $datetime = Redis::hGet($hash, $field) ?: $value;
+        $datetime = \Redis::hGet($hash, $field) ?: $value;
 
         if ($datetime) {
             return new Carbon($datetime);
@@ -59,13 +68,4 @@ trait LastActivedAtHelper
         }
     }
 
-    private function getHashFromDateString($date)
-    {
-        return $this->hash_prefix . $date;
-    }
-
-    private function getHashField()
-    {
-        return $this->field_prefix . $this->id;
-    }
 }

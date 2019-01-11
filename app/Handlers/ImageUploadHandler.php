@@ -10,38 +10,36 @@ class ImageUploadHandler
 
     public function save($file, $folder, $file_prefix, $max_width = false)
     {
-        $folder_name = "uploads/images/$folder/" . date('Ym/d', time());
+        $folder_name = "uploads/images/$folder/" . date("Ym/d", time());
 
-        $upload_path = public_path() . '/' . $folder_name;
+        $upload_path = public_path() . "/$folder_name";
 
+        //获取文件后缀(粘贴图片无后缀，默认为png)
         $extension = strtolower($file->getClientOriginalExtension()) ?: 'png';
-
-        $filename = $file_prefix . '_' . time() . '_' . str_random(10) . '.' . $extension;
 
         if (!in_array($extension, $this->allowed_ext)) {
             return false;
         }
 
+        $filename = $file_prefix . '-' . time() . '-' . str_random(10) . '.' . $extension;
+
         $file->move($upload_path, $filename);
 
-        //如果限制了最大宽度，就进行裁剪
-        if($max_width && $extension != 'gif')
-        {
-            $this->reduceSize($upload_path . '/' . $filename,$max_width);
+        if ($max_width && $extension != 'gif') {
+            $this->reduceSize("$upload_path/$filename", $max_width);
         }
 
         return [
-            'path' => config('app.url') . "/$folder_name/$filename"
+            'path' => "/$folder_name/$filename",
         ];
     }
 
-    public function reduceSize($file_path,$max_width)
+    public function reduceSize($file_path, $max_width)
     {
         $image = Image::make($file_path);
 
-        $image->resize($max_width,null,function ($constraint){
+        $image->resize($max_width, null, function ($constraint) {
             $constraint->aspectRatio();
-
             $constraint->upsize();
         });
 

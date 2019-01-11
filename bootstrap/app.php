@@ -11,7 +11,7 @@
 |
 */
 
-require_once __DIR__ . '/helpers.php';
+require_once __DIR__ . '/helpers.php';//启动时载入helpers.php
 
 $app = new Illuminate\Foundation\Application(
     realpath(__DIR__.'/../')

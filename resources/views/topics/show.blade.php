@@ -31,10 +31,9 @@
                     <h1 class="text-center">
                         {{ $topic->title }}
                     </h1>
-
                     <div class="article-meta text-center">
                         {{ $topic->created_at->diffForHumans() }}
-                        ⋅
+                        ·
                         <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                         {{ $topic->reply_count }}
                     </div>
@@ -50,12 +49,11 @@
                                role="button">
                                 <i class="glyphicon glyphicon-edit"></i> 编辑
                             </a>
-                            <form action="{{ route('topics.destroy', $topic->id) }}" method="post">
+                            <form action="{{ route('topics.destroy',$topic->id) }}" method="post">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                                 <button type="submit" class="btn btn-default btn-xs pull-left" style="margin-left: 6px">
-                                    <i class="glyphicon glyphicon-trash"></i>
-                                    删除
+                                    <i class="glyphicon glyphicon-trash"></i>删除
                                 </button>
                             </form>
                         </div>
@@ -66,8 +64,8 @@
 
             <div class="panel panel-default topic-reply">
                 <div class="panel-body">
-                    @includeWhen(Auth::check(),'topics._reply_box', ['topic' => $topic])
-                    @include('topics._reply_list', ['replies' => $topic->replies()->with('user')->get()])
+                    @includeWhen(Auth::check(),'topics._reply_box',['topic' => $topic])
+                    @include('topics._reply_list',['replies' => $topic->replies()->with('user')->paginate(5)])
                 </div>
             </div>
         </div>
