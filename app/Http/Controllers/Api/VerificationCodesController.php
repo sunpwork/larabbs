@@ -13,8 +13,9 @@ class VerificationCodesController extends Controller
         $phone = $request->phone;
 
         if (!app()->environment('production')) {
-            $code = random_int(100000, 999999);
+            $code = '123456';
         } else {
+            $code = (string)random_int(100000, 999999);
             try {
                 $easySms->send($phone, [
                     'template' => '104003',
