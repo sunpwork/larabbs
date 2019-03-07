@@ -88,10 +88,4 @@ class User extends Authenticatable implements JWTSubject
         }
         $this->attributes['password'] = $value;
     }
-
-    public function idToNameMap()
-    {
-        $users = User::all(['id', 'name']);
-
-    }
 }
