@@ -13,7 +13,7 @@ class ImageTransformer extends TransformerAbstract
             'id' => $image->id,
             'user_id' => $image->user_id,
             'type' => $image->type,
-            'path' => $image->path,
+            'path' => url($image->path),
             'created_at' => $image->created_at->toDateTimeString(),
             'updated_at' => $image->updated_at->toDateTimeString(),
         ];
