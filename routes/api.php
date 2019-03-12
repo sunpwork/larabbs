@@ -17,7 +17,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api',
-    'middleware' => ['serializer:array', 'bindings', 'change-locale']
+    'middleware' => ['serializer:array', 'bindings']
 ], function (\Dingo\Api\Routing\Router $api) {
     $api->group([
         'middleware' => 'api.throttle',
@@ -88,6 +88,8 @@ $api->version('v1', [
             $api->get('user', 'UsersController@me')
                 ->name('api.user.show');
             $api->patch('user', 'UsersController@update')
+                ->name('api.user.update');
+            $api->put('user', 'UsersController@update')
                 ->name('api.user.update');
             // 图片资源
             $api->post('images', 'ImagesController@store')
